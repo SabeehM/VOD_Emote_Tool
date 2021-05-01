@@ -14,8 +14,8 @@ class SettingsUtil:
             data = json.load(f)
 
         for key, value in incomingSettings.items():
-                data[key] = value
-                print(data[key])
+                data["client"][key] = value
+                print(data["client"][key])
 
         with open(path, "w") as f:
             json.dump(data, f, indent=4)
