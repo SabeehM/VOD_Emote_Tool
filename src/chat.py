@@ -13,6 +13,7 @@ class Chat:
         self.endTime : datetime = None
         self.messages : list = []
         self.emoteMessages : list = []
+        self.externalEmoteMessages: list = []
         self.cache: dict() = dict()
     def add(self, message: Message):
         for ID in message.emoticon.keys():
@@ -20,6 +21,8 @@ class Chat:
         if(message.emoticon):
             self.emoteMessages.append(message)
         self.messages.append(message)
+    def addExternal(self, message):
+        self.externalEmoteMessages.append(message)
     def cached(self, key):
         return self.cache.get(key, None)
     
