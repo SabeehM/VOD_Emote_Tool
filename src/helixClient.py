@@ -2,8 +2,12 @@ from twitch import Helix
 from twitch.helix import Video
 from chat import Chat, Message
 from analyzer import Analyzer
-import dateutil.parser
+from logger import Logger
 from datetime import datetime, timedelta
+from stringUtil import StringUtil
+import dateutil.parser
+
+__defaultBase__ = 10
 
 class HelixClient:
     def __init__(self, clientID: str, bearer_token: str):
@@ -26,7 +30,7 @@ class HelixClient:
             currentData = comment.data
             emoticonInfo : dict() = dict()
             emotes = False
-            print('Extracted ' + str(commentCount) + ' messages...', end='\r')
+            Logger.print_info('Extracted ' + str(commentCount) + ' messages...', end='\r')
             for emoteIndex in range(len(currentData.get("message", None).get("emoticons", []))):
                 emotes = True
                 id = (currentData.get("message", None).get("emoticons", [])[emoteIndex]['_id'])
@@ -45,7 +49,8 @@ class HelixClient:
                     )
                 )
             commentCount+=1
-        print("\n")
+        Logger.exit_line()
+        Logger.print_pass("Completed...")
         return
 
     def searchExternalEmote(self, emoteName):
@@ -53,7 +58,8 @@ class HelixClient:
         commentCount = 0
         for comment in (foundVideo.comments):
             currentData = comment.data
-            if(emoteName in currentData['message']['body']):
+            #if(emoteName in currentData['message']['body']):
+            if(StringUtil.stringSearch(currentData['message']['body'], emoteName, __defaultBase__)):
                 self.commentData.addExternal(
                     Message(
                         currentData['commenter']['name'], 
@@ -65,15 +71,15 @@ class HelixClient:
             '''
             Rabin-Karp algorithm
             '''
-            print('Seeked ' + str(commentCount) + ' messages...', end='\r')
+            Logger.print_info('Seeked ' + str(commentCount) + ' messages...', end='\r')
             commentCount+=1
-        print("\n")
-        print(self.commentData.externalEmoteMessages)
+        Logger.exit_line()
+        Logger.print_pass("Completed...")
         return
 
     def emoteAnalysis(self):
         self.commentAnalyzer.emoteSpread(self.commentData)
         return
-    def emoteOverTime(self, emoteName, external=False):
-        self.commentAnalyzer.emotePopularity(self.commentData, emoteName, external)
+    def emoteOverTime(self, emoteName, external=False, timeSegments=None, suggestions=None):
+        self.commentAnalyzer.emotePopularity(self.currentVideo, self.commentData, emoteName, external, timeSegments, suggestions)
         return

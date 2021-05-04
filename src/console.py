@@ -1,6 +1,7 @@
 from settings import SettingsUtil
 from helixClient import HelixClient
 from parameters import Parameters
+from logger import Logger
 import requests, argparse
 
 def main():
@@ -21,11 +22,13 @@ def main():
     parser.add_argument("--e", dest="emotePopularity", help="Use flag to determine emotePopularity -Does not include external emotes", action="store_true")
     parser.add_argument("--t", dest="emoteName", help="Name of emote for time graph", type=str)
     parser.add_argument("--external", dest="emoteTimeExternal", help="Use flag if using time graph for external emote", action="store_true")
-
+    parser.add_argument("--segment", dest="timeSegments", help="Seconds per segment to group emote usage in seconds. -Default is 30", type=int)
+    parser.add_argument("--timestamps", dest="timestamps", help="Use flag if using timestamp recommendations. Input ax number of suggested timestamps. -Default is 5", type=int)
+    
     params = Parameters(vars(parser.parse_args()))
-
+    
     if(not params.isValid()):
-        print("No action specified... -h for help")
+        Logger.print_fail("No action specified... -h for help")
         return
         
     extractor : HelixClient = HelixClient(currentSettings['client']['clientID'], bearer_token)
@@ -39,5 +42,5 @@ def main():
     if(params.emotePopularityProcess):
         extractor.emoteAnalysis()
     if(params.emoteName):
-        extractor.emoteOverTime(params.emoteName, params.isExternal)
+        extractor.emoteOverTime(params.emoteName, params.isExternal, params.timeSegments, params.numberOfTimeStamps)
     return
