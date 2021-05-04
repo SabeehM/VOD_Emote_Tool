@@ -1,9 +1,9 @@
 class StringUtil:
     @staticmethod
-    def stringSearch(text, substr, base):
-        goalHash = hashInit(substr, base)
-        currentHash = 0
-        window_start = 0
+    def stringSearch(text : str, substr : str, base : int) -> bool:
+        goalHash : int = hashInit(substr, base)
+        currentHash : int = 0
+        window_start : int = 0
         if(len(substr)>len(text)):
             return False
         for window_end in range(len(text)):
@@ -18,16 +18,16 @@ class StringUtil:
                 return True
         return False
 
-def hashInit(sequence, base):
-    lenSeq = len(sequence)
-    baseCount = lenSeq-1
-    hashVal = 0
+def hashInit(sequence : str, base : int) -> int:
+    lenSeq : int = len(sequence)
+    baseCount : int = lenSeq-1
+    hashVal : int = 0
     for x in range(lenSeq):
         hashVal+= ord(sequence[x])*(base**(baseCount-x))
     return hashVal
 
-def hashUpdate(num, new, old, base, lenSeq):
-    ordOld = 0 if old is None else ord(old)
+def hashUpdate(num : int, new : str, old : str, base : int, lenSeq : int) -> int:
+    ordOld : int = 0 if old is None else ord(old)
     return(int(num-ordOld*(base**(lenSeq)))*base+ord(new))
 
     

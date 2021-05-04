@@ -1,15 +1,16 @@
 import json
 
 class SettingsUtil:
-    def __init__(self):
+    def __init__(self) -> None:
         self.settings : dict = dict()
         self.loadSettings()
 
-    def loadSettings(self, path: str = "./config.json"):
+    def loadSettings(self, path: str = "./config.json") -> None:
         with open(path) as f:
             self.settings = json.load(f)
+        return
 
-    def setSettings(self, incomingSettings:dict, path: str = "./config.json"):
+    def setSettings(self, incomingSettings:dict, path: str = "./config.json") -> None:
         with open(path, "r") as f:
             data = json.load(f)
 
@@ -20,7 +21,7 @@ class SettingsUtil:
             json.dump(data, f, indent=4)
             
         self.loadSettings()
-    
-    def getSettings(self):
-        return self.settings
+        return
 
+    def getSettings(self) -> dict():
+        return self.settings

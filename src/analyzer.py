@@ -4,17 +4,19 @@ from datetime import datetime, timedelta
 from matplotlib.pyplot import figure
 from settings import SettingsUtil
 from logger import Logger
+from twitch.helix import Video
 import math
 import dateutil.parser
 import matplotlib.pyplot as plt
 
 __defaultTimeSegments__ = 30
-__defaultSuggestionCount__ = 5
+__defaultSuggestionCount__ = 3
 __baseURL__ = "https://twitch.tv/videos/"
+
 class Analyzer:
     def emoteSpread(self, data : Chat):
-        emoteCount = 0
-        emoteDict = defaultdict(int)
+        emoteCount : int = 0
+        emoteDict : dict() = defaultdict(int)
         for message in data.emoteMessages:
             emoteCount+=1
             for emote in message.emoticon.values():
@@ -23,12 +25,12 @@ class Analyzer:
         for emote in emoteDict.keys():
             Logger.print_bold(emote + " : " + str(100*round(emoteDict[emote]/emoteCount, 2)) +"%")
         
-    def emotePopularity(self, video, data, emoteName, external, timeSegments, suggestions):
-        timeSegmentation = timeSegments or __defaultTimeSegments__
-        timeSegmentation = timedelta(seconds=timeSegmentation)
+    def emotePopularity(self, video : Video, data : Chat, emoteName : str, external : bool, timeSegments : int, suggestions : int) -> None:
+        timeSegmentation : int = timeSegments or __defaultTimeSegments__
+        timeSegmentation : timedelta = timedelta(seconds=timeSegmentation)
         emoteTimestamps: list = []
-        emoteTimeCount = defaultdict(int)
-        dataQuery = []
+        emoteTimeCount : defaultdict = defaultdict(int)
+        dataQuery : list = []
         if(not external):
             dataQuery = data.emoteMessages
         else:
@@ -43,38 +45,38 @@ class Analyzer:
         if(not len(emoteTimeCount.keys())):
             Logger.print_warn("No emotes found...")
             return
-        dataX = [h.total_seconds()/3600.0 for h in emoteTimeCount.keys()]
-        suggestionCount = suggestions if suggestions else __defaultSuggestionCount__
+        dataX : list = [h.total_seconds()/3600.0 for h in emoteTimeCount.keys()]
+        suggestionCount : int = suggestions if (suggestions!=-1) else __defaultSuggestionCount__
         if(suggestions):
-            sortedEmoteTimeCount = sorted(emoteTimeCount, key=emoteTimeCount.get)
+            sortedEmoteTimeCount : list = sorted(emoteTimeCount, key=emoteTimeCount.get)
             sortedEmoteTimeCount.reverse()
-            #[key for key,value in emoteTimeCount.items() if value >= avgCountPerSegment]
             for timestampNumber in range(min(suggestionCount, len(sortedEmoteTimeCount))):
                 timestamp = sortedEmoteTimeCount[timestampNumber]
                 seconds = timestamp.total_seconds()
                 Logger.print_info(__baseURL__ + video.id + "?t=" + str(int(seconds // 3600)) + "h" + str(int((seconds % 3600)) // 60) + "m" + str(int(seconds % 60)) + "s")
-        self.plot(dataX, emoteTimeCount.values(), "Time (hrs into Stream)", "Frequency per Segment", emoteName)
-    
-    def plot(self, dataX, dataY, labelX, labelY, title):
+        self.plot(dataX, emoteTimeCount.values(), "Time (hrs into Stream)", "Frequency per Segment", data.streamer + " : " + emoteName)
+        return
+
+    def plot(self, dataX : list, dataY : list, labelX : str, labelY : str, title : str):
         settingsPlotInstance = SettingsUtil().getSettings().get('plot', None)
         plt.plot(dataX, dataY, 
-            color=settingsPlotInstance.get('color', "black"),
-            drawstyle=settingsPlotInstance.get('drawstyle', 'default'),
-            fillstyle=settingsPlotInstance.get('fillstyle', 'full'),
-            linestyle=settingsPlotInstance.get('linestyle', 'solid'),
-            linewidth=float(settingsPlotInstance.get('linewidth', "1"))
+            color=settingsPlotInstance.get('styles').get('color', "black"),
+            drawstyle=settingsPlotInstance.get('styles').get('drawstyle', 'default'),
+            fillstyle=settingsPlotInstance.get('styles').get('fillstyle', 'full'),
+            linestyle=settingsPlotInstance.get('styles').get('linestyle', 'solid'),
+            linewidth=float(settingsPlotInstance.get('styles').get('linewidth', "1"))
         )
         plt.xlabel(labelX)
         plt.ylabel(labelY)
         plt.title(title)
         saveFileName = str(datetime.now()).replace(".","-").replace(" ", "-").replace(":", "-") + ".png"
         fig = plt.gcf()
-        fig.set_size_inches(float(settingsPlotInstance.get("width")),float(settingsPlotInstance.get("height")))
+        fig.set_size_inches(float(settingsPlotInstance.get('properties').get("width")),float(settingsPlotInstance.get('properties').get("height")))
         fig.savefig(
             settingsPlotInstance.get("path")+saveFileName,
-            dpi=settingsPlotInstance.get("dpi"),
-            #quality=settingsPlotInstance.get("quality"),
-            #optimize=(settingsPlotInstance.get("optimize")=="true") Depreciated as of matplotlib 3.3
+            dpi=settingsPlotInstance.get('properties').get("dpi"),
+            #quality=settingsPlotInstance.get('properties').get("quality"),
+            #optimize=(settingsPlotInstance.get('properties').get("optimize")=="true") Depreciated as of matplotlib 3.3
         )
         Logger.print_pass("File: " + saveFileName + " saved at: " +settingsPlotInstance.get("path"))
         

@@ -1,0 +1,23 @@
+{
+    "client" : {
+        "clientID": null,
+        "clientSecretID": null
+    },
+    "plot": {
+        "path": "../plots/",
+        "properties": {
+            "dpi": "figure",
+            "quality": 95,
+            "optimize": false,
+            "width": 10,
+            "height": 10
+        },
+        "styles" : {
+            "color": "#9B9797",
+            "drawstyle": "default",
+            "fillstyle": "full",
+            "linestyle": "solid",
+            "linewidth": 1
+        }
+    }
+}
