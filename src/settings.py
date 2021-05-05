@@ -5,12 +5,12 @@ class SettingsUtil:
         self.settings : dict = dict()
         self.loadSettings()
 
-    def loadSettings(self, path: str = "./config.json") -> None:
+    def loadSettings(self, path: str = "./VODet/config.json") -> None:
         with open(path, encoding='utf-8') as f:
             self.settings = json.load(f)
         return
 
-    def setSettings(self, incomingSettings:dict, path: str = "./config.json") -> None:
+    def setSettings(self, incomingSettings:dict, path: str = "./VODet/config.json") -> None:
         with open(path, "r", encoding='utf-8') as f:
             data = json.load(f)
 

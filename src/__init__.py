@@ -4,6 +4,8 @@ from parameters import Parameters
 from logger import Logger
 import requests, argparse
 
+__name__ = "VODet"
+__all__ = [SettingsUtil, HelixClient, Parameters, Logger]
 def main() -> None:
     settings : SettingsUtil = SettingsUtil()
     currentSettings: dict = settings.getSettings()
