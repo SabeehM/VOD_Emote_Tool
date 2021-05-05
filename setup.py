@@ -10,7 +10,7 @@ classifiers = [
  
 setup(
   name="VODet",
-  version = '0.0.2.6',
+  version = '0.0.2.7',
   description="A simple tool to gather emote analytics from any twitch VOD.",
   long_description=open('README.txt').read() + '\n\n' + open('CHANGELOG.txt').read(),
   url='',  
