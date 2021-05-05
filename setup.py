@@ -20,5 +20,10 @@ setup(
   classifiers=classifiers,
   keywords='twitch', 
   packages=find_packages(),
-  install_requires=['matplotlib','pyparsing','python-dateutil','twitch-python'] 
+  install_requires=['matplotlib','pyparsing','python-dateutil','twitch-python'],
+  entry_points={
+        'console_scripts': [
+            'VODet = VODet:main',
+        ],
+    }
 )
