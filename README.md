@@ -7,6 +7,7 @@ If you don't have one visit [Twitch Development Console](https://dev.twitch.tv/c
 ```console
 pip install VODet
 ```
+*May need to pip install colorama
 
 ## Usage
 Obtain the VOD ID from the disired VOD, ( VOD_ID from https://www.twitch.tv/videos/VOD_ID when viewing a vod)
