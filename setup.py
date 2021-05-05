@@ -12,7 +12,7 @@ setup(
   name="VODet",
   version = '0.0.2.7',
   description="A simple tool to gather emote analytics from any twitch VOD.",
-  long_description=open('README.txt').read() + '\n\n' + open('CHANGELOG.txt').read(),
+  long_description=  open('CHANGELOG.txt').read(),
   url='',  
   author='Sabeeh Malik',
   author_email='sabeeh.malik@gmail.com',
