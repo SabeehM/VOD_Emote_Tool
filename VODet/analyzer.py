@@ -1,9 +1,9 @@
-from chat import Chat
+from .chat import Chat
 from collections import defaultdict
 from datetime import datetime, timedelta
 from matplotlib.pyplot import figure
-from settings import SettingsUtil
-from logger import Logger
+from .settings import SettingsUtil
+from .logger import Logger
 from twitch.helix import Video
 import math
 import dateutil.parser

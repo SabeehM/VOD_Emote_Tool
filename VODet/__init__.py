@@ -1,8 +1,9 @@
-from settings import SettingsUtil
-from helixClient import HelixClient
-from parameters import Parameters
-from logger import Logger
+from .settings import SettingsUtil
+from .helixClient import HelixClient
+from .parameters import Parameters
+from .logger import Logger
 import requests, argparse
+
 
 __name__ = "VODet"
 __all__ = [SettingsUtil, HelixClient, Parameters, Logger]

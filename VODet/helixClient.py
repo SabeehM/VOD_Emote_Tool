@@ -1,10 +1,10 @@
 from twitch import Helix
 from twitch.helix import Video
-from chat import Chat, Message
-from analyzer import Analyzer
-from logger import Logger
+from .chat import Chat, Message
+from .analyzer import Analyzer
+from .logger import Logger
+from .stringUtil import StringUtil
 from datetime import datetime, timedelta
-from stringUtil import StringUtil
 import dateutil.parser
 
 __defaultBase__ = 10
