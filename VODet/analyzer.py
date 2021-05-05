@@ -5,13 +5,14 @@ from matplotlib.pyplot import figure
 from .settings import SettingsUtil
 from .logger import Logger
 from twitch.helix import Video
-import math
+import math, os, pathlib
 import dateutil.parser
 import matplotlib.pyplot as plt
 
 __defaultTimeSegments__ = 30
 __defaultSuggestionCount__ = 3
 __baseURL__ = "https://twitch.tv/videos/"
+__plotPath__ = f'{os.path.dirname(os.path.abspath(__file__))}'
 
 class Analyzer:
     def emoteSpread(self, data : Chat):
@@ -73,10 +74,10 @@ class Analyzer:
         fig = plt.gcf()
         fig.set_size_inches(float(settingsPlotInstance.get('properties').get("width")),float(settingsPlotInstance.get('properties').get("height")))
         fig.savefig(
-            settingsPlotInstance.get("path")+saveFileName,
+            __plotPath__+settingsPlotInstance.get("path")+saveFileName,
             dpi=settingsPlotInstance.get('properties').get("dpi"),
             #quality=settingsPlotInstance.get('properties').get("quality"),
             #optimize=(settingsPlotInstance.get('properties').get("optimize")=="true") Depreciated as of matplotlib 3.3
         )
-        Logger.print_pass("File: " + saveFileName + " saved at: " +settingsPlotInstance.get("path"))
+        Logger.print_pass("File: " + saveFileName + " saved at: " + __plotPath__ + settingsPlotInstance.get("path"))
         

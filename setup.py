@@ -10,7 +10,7 @@ classifiers = [
  
 setup(
   name="VODet",
-  version = '0.0.2',
+  version = '0.0.2.6',
   description="A simple tool to gather emote analytics from any twitch VOD.",
   long_description=open('README.txt').read() + '\n\n' + open('CHANGELOG.txt').read(),
   url='',  
@@ -21,6 +21,7 @@ setup(
   keywords='twitch', 
   packages=find_packages(),
   install_requires=['matplotlib','pyparsing','python-dateutil','twitch-python'],
+  include_package_data=True,
   entry_points={
         'console_scripts': [
             'VODet = VODet:main',
