@@ -26,13 +26,13 @@ Obtain the VOD ID from the disired VOD [VOD_ID from https://www.twitch.tv/videos
 
 `--t <EMOTE_NAME>` to get emote usage over time
 
-add flag `--external` if not build into twitch
+add flag `--external` if not built into twitch
 
-add flag `--segment <SEGMENTS>` to change how the data gets segmented in seconds
+add flag `--segment <SEGMENTS>` to change how the data gets segmented (in seconds)
  
-add flag `--timestamps` to get VOD link recommendations for the emote. Add a number `--timestamps <TIMESTAMPS>` to specify number of suggestions
+add flag `--timestamps` to get VOD link recommendations for the emote. Add a number `--timestamps <TIMESTAMPS>` to specify the number of suggestions
 
-*Plots are saved according to config.json (can be changed).*
+*Plots are saved according to path in config.json (can be changed).*
 
 ### Upcoming Features
 
